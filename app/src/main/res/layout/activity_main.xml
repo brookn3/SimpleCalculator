@@ -7,16 +7,109 @@
     tools:context=".MainActivity">
 
     <Button
+        android:id="@+id/divisionSignBtn"
+        android:layout_width="60dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="16dp"
+        android:text="/"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/multiplicationSignBtn"
+        app:layout_constraintEnd_toStartOf="@+id/equalsBtn" />
+
+    <Button
+        android:id="@+id/numNineBtn"
+        android:layout_width="60dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="9"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/numSixBtn"
+        app:layout_constraintEnd_toStartOf="@+id/divisionSignBtn" />
+
+    <Button
+        android:id="@+id/numEightBtn"
+        android:layout_width="60dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="8"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/numFiveBtn"
+        app:layout_constraintEnd_toStartOf="@+id/numNineBtn" />
+
+    <Button
+        android:id="@+id/numSevenBtn"
+        android:layout_width="60dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="7"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/numFourBtn"
+        app:layout_constraintEnd_toStartOf="@+id/numEightBtn"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/numSixBtn"
+        android:layout_width="60dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="6"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/numThreeBtn"
+        app:layout_constraintEnd_toStartOf="@+id/multiplicationSignBtn" />
+
+    <Button
+        android:id="@+id/numFiveBtn"
+        android:layout_width="60dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="5"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/numTwoBtn"
+        app:layout_constraintEnd_toStartOf="@+id/numSixBtn" />
+
+    <Button
+        android:id="@+id/numFourBtn"
+        android:layout_width="60dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="4"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/numOneBtn"
+        app:layout_constraintEnd_toStartOf="@+id/numFiveBtn"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
         android:id="@+id/numOneBtn"
         android:layout_width="60dp"
         android:layout_height="64dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:text="1"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/numZeroBtn"
-        app:layout_constraintEnd_toStartOf="@+id/numTwoBtn" />
+        app:layout_constraintEnd_toStartOf="@+id/numTwoBtn"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/numTwoBtn"
@@ -99,7 +192,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="150dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:ems="10"
@@ -124,8 +217,8 @@
 
     <Button
         android:id="@+id/equalsBtn"
-        android:layout_width="59dp"
-        android:layout_height="363dp"
+        android:layout_width="64dp"
+        android:layout_height="304dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="32dp"
