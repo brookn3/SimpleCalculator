@@ -2,7 +2,9 @@ package edu.tacoma.uw.css.brookn3.simplecalculator;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -12,5 +14,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button plusSignBtn = (Button) findViewById(R.id.plusSignBtn);
+
+        // Assigning an onClick listener:
+        plusSignBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText calcEditText = (EditText) findViewById(R.id.calcEditText);
+            }
+        });
     }
 }
