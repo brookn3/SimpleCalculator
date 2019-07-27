@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText calcEditText;
 
+    private StringBuilder currentValue;
     private List<Double> inputValues;
     private List<String> arithmeticOperators;
     private double result;
@@ -41,7 +43,10 @@ public class MainActivity extends AppCompatActivity {
 
         // Initializing fields:
         setupUIViews();
-
+        currentValue = new StringBuilder();
+        inputValues = new LinkedList<Double>();
+        arithmeticOperators = new LinkedList<String>();
+        result = 0;
 
 
         // Defining a listener for each object:
@@ -122,6 +127,47 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 calcEditText.setText(calcEditText.getText().toString() +
                         numNineBtn.getText().toString());
+            }
+        });
+
+        decimalBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calcEditText.setText(calcEditText.getText().toString() +
+                        decimalBtn.getText().toString());
+            }
+        });
+
+
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calcEditText.setText(calcEditText.getText().toString() +
+                        addBtn.getText().toString());
+            }
+        });
+
+        subtractBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calcEditText.setText(calcEditText.getText().toString() +
+                        subtractBtn.getText().toString());
+            }
+        });
+
+        multiplyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calcEditText.setText(calcEditText.getText().toString() +
+                        multiplyBtn.getText().toString());
+            }
+        });
+
+        divideBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calcEditText.setText(calcEditText.getText().toString() +
+                        divideBtn.getText().toString());
             }
         });
     }
