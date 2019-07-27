@@ -7,7 +7,19 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/divisionSignBtn"
+        android:id="@+id/clearBtn"
+        android:layout_width="60dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="16dp"
+        android:text="@android:string/cancel"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/equalsBtn"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/divideBtn"
         android:layout_width="60dp"
         android:layout_height="64dp"
         android:layout_marginEnd="32dp"
@@ -15,7 +27,7 @@
         android:layout_marginBottom="16dp"
         android:text="/"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/multiplicationSignBtn"
+        app:layout_constraintBottom_toTopOf="@+id/multiplyBtn"
         app:layout_constraintEnd_toStartOf="@+id/equalsBtn" />
 
     <Button
@@ -28,7 +40,7 @@
         android:text="9"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/numSixBtn"
-        app:layout_constraintEnd_toStartOf="@+id/divisionSignBtn" />
+        app:layout_constraintEnd_toStartOf="@+id/divideBtn" />
 
     <Button
         android:id="@+id/numEightBtn"
@@ -67,7 +79,7 @@
         android:text="6"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/numThreeBtn"
-        app:layout_constraintEnd_toStartOf="@+id/multiplicationSignBtn" />
+        app:layout_constraintEnd_toStartOf="@+id/multiplyBtn" />
 
     <Button
         android:id="@+id/numFiveBtn"
@@ -133,10 +145,10 @@
         android:text="3"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/decimalBtn"
-        app:layout_constraintEnd_toStartOf="@+id/minusSignBtn" />
+        app:layout_constraintEnd_toStartOf="@+id/subtractBtn" />
 
     <Button
-        android:id="@+id/multiplicationSignBtn"
+        android:id="@+id/multiplyBtn"
         android:layout_width="60dp"
         android:layout_height="64dp"
         android:layout_marginEnd="32dp"
@@ -144,11 +156,11 @@
         android:layout_marginBottom="16dp"
         android:text="*"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/minusSignBtn"
+        app:layout_constraintBottom_toTopOf="@+id/subtractBtn"
         app:layout_constraintEnd_toStartOf="@+id/equalsBtn" />
 
     <Button
-        android:id="@+id/minusSignBtn"
+        android:id="@+id/subtractBtn"
         android:layout_width="60dp"
         android:layout_height="64dp"
         android:layout_marginEnd="32dp"
@@ -156,11 +168,11 @@
         android:layout_marginBottom="16dp"
         android:text="-"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/plusSignBtn"
+        app:layout_constraintBottom_toTopOf="@+id/addBtn"
         app:layout_constraintEnd_toStartOf="@+id/equalsBtn" />
 
     <Button
-        android:id="@+id/plusSignBtn"
+        android:id="@+id/addBtn"
         android:layout_width="60dp"
         android:layout_height="64dp"
         android:layout_marginStart="16dp"
@@ -218,7 +230,7 @@
     <Button
         android:id="@+id/equalsBtn"
         android:layout_width="64dp"
-        android:layout_height="304dp"
+        android:layout_height="224dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="32dp"
