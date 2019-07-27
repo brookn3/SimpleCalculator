@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private Button multiplyBtn;
     private Button divideBtn;
     private Button clearBtn;
+    private Button backBtn;
+    private Button equalsBtn;
 
     private EditText calcEditText;
 
@@ -170,6 +172,27 @@ public class MainActivity extends AppCompatActivity {
                         divideBtn.getText().toString());
             }
         });
+
+        clearBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        equalsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     private void setupUIViews() {
@@ -190,6 +213,8 @@ public class MainActivity extends AppCompatActivity {
         multiplyBtn = (Button) findViewById(R.id.multiplyBtn);
         divideBtn = (Button) findViewById(R.id.divideBtn);
         clearBtn = (Button) findViewById(R.id.clearBtn);
+        backBtn = (Button) findViewById(R.id.backBtn);
+        equalsBtn = (Button) findViewById(R.id.equalsBtn);
 
         calcEditText = (EditText) findViewById(R.id.calcEditText);
     }

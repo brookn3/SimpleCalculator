@@ -7,32 +7,45 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/clearBtn"
-        android:layout_width="60dp"
+        android:id="@+id/backBtn"
+        android:layout_width="64dp"
         android:layout_height="64dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:text="@android:string/cancel"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/equalsBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="<--" />
+
+    <Button
+        android:id="@+id/clearBtn"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="c"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/backBtn"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/divideBtn"
-        android:layout_width="60dp"
+        android:layout_width="64dp"
         android:layout_height="64dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:text="/"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/multiplyBtn"
-        app:layout_constraintEnd_toStartOf="@+id/equalsBtn" />
+        app:layout_constraintEnd_toStartOf="@+id/clearBtn" />
 
     <Button
         android:id="@+id/numNineBtn"
-        android:layout_width="60dp"
+        android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
@@ -44,7 +57,7 @@
 
     <Button
         android:id="@+id/numEightBtn"
-        android:layout_width="60dp"
+        android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
@@ -56,7 +69,7 @@
 
     <Button
         android:id="@+id/numSevenBtn"
-        android:layout_width="60dp"
+        android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
@@ -71,7 +84,7 @@
 
     <Button
         android:id="@+id/numSixBtn"
-        android:layout_width="60dp"
+        android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
@@ -83,7 +96,7 @@
 
     <Button
         android:id="@+id/numFiveBtn"
-        android:layout_width="60dp"
+        android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
@@ -95,7 +108,7 @@
 
     <Button
         android:id="@+id/numFourBtn"
-        android:layout_width="60dp"
+        android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
@@ -110,7 +123,7 @@
 
     <Button
         android:id="@+id/numOneBtn"
-        android:layout_width="60dp"
+        android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
@@ -125,7 +138,7 @@
 
     <Button
         android:id="@+id/numTwoBtn"
-        android:layout_width="60dp"
+        android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
@@ -137,7 +150,7 @@
 
     <Button
         android:id="@+id/numThreeBtn"
-        android:layout_width="60dp"
+        android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
@@ -149,22 +162,22 @@
 
     <Button
         android:id="@+id/multiplyBtn"
-        android:layout_width="60dp"
+        android:layout_width="64dp"
         android:layout_height="64dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:text="*"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/subtractBtn"
-        app:layout_constraintEnd_toStartOf="@+id/equalsBtn" />
+        app:layout_constraintEnd_toStartOf="@+id/backBtn" />
 
     <Button
         android:id="@+id/subtractBtn"
-        android:layout_width="60dp"
+        android:layout_width="64dp"
         android:layout_height="64dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:text="-"
         android:textSize="30sp"
@@ -173,40 +186,37 @@
 
     <Button
         android:id="@+id/addBtn"
-        android:layout_width="60dp"
+        android:layout_width="64dp"
         android:layout_height="64dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="32dp"
         android:text="+"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/equalsBtn"
-        app:layout_constraintStart_toEndOf="@+id/decimalBtn" />
+        app:layout_constraintEnd_toStartOf="@+id/equalsBtn" />
 
     <Button
         android:id="@+id/decimalBtn"
-        android:layout_width="60dp"
+        android:layout_width="64dp"
         android:layout_height="64dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="32dp"
         android:text="."
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/numZeroBtn" />
+        app:layout_constraintEnd_toStartOf="@+id/addBtn" />
 
     <EditText
         android:id="@+id/calcEditText"
-        android:layout_width="350dp"
+        android:layout_width="384dp"
         android:layout_height="72dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="150dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="160dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:ems="10"
         android:hint="0"
         android:inputType="textPersonName"
@@ -217,20 +227,23 @@
 
     <Button
         android:id="@+id/numZeroBtn"
-        android:layout_width="136dp"
+        android:layout_width="144dp"
         android:layout_height="64dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="32dp"
         android:text="0"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/decimalBtn"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/equalsBtn"
         android:layout_width="64dp"
-        android:layout_height="224dp"
+        android:layout_height="144dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="32dp"
