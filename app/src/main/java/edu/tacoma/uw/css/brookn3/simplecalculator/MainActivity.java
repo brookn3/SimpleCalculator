@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button numZeroBtn;
@@ -28,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText calcEditText;
 
+    private List<Double> inputValues;
+    private List<String> arithmeticOperators;
+    private double result;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +49,79 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 calcEditText.setText(calcEditText.getText().toString() +
-                                        numZeroBtn.getText().toString());
+                        numZeroBtn.getText().toString());
+            }
+        });
+
+        numOneBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calcEditText.setText(calcEditText.getText().toString() +
+                        numOneBtn.getText().toString());
+            }
+        });
+
+        numTwoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calcEditText.setText(calcEditText.getText().toString() +
+                        numTwoBtn.getText().toString());
+            }
+        });
+
+        numThreeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calcEditText.setText(calcEditText.getText().toString() +
+                        numThreeBtn.getText().toString());
+            }
+        });
+
+        numFourBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calcEditText.setText(calcEditText.getText().toString() +
+                        numFourBtn.getText().toString());
+            }
+        });
+
+        numFiveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calcEditText.setText(calcEditText.getText().toString() +
+                        numFiveBtn.getText().toString());
+            }
+        });
+
+        numSixBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calcEditText.setText(calcEditText.getText().toString() +
+                        numSixBtn.getText().toString());
+            }
+        });
+
+        numSevenBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calcEditText.setText(calcEditText.getText().toString() +
+                        numSevenBtn.getText().toString());
+            }
+        });
+
+        numEightBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calcEditText.setText(calcEditText.getText().toString() +
+                        numEightBtn.getText().toString());
+            }
+        });
+
+        numNineBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calcEditText.setText(calcEditText.getText().toString() +
+                        numNineBtn.getText().toString());
             }
         });
     }
