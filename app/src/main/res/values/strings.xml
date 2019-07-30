@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SimpleCalculator</string>
+    <string name="back_arrow">\u27f5</string>>
 </resources>

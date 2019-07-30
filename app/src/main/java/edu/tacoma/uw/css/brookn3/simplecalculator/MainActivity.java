@@ -176,14 +176,17 @@ public class MainActivity extends AppCompatActivity {
         clearBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                calcEditText.setText(new String());
             }
         });
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                String current = calcEditText.getText().toString();
+                if (!current.isEmpty()) {
+                    calcEditText.setText(current.substring(0, current.length() - 1));
+                }
             }
         });
 
