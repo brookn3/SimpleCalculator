@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private double result;
 
     /* Once a user presses the equals sign,
-     * all buttons except the Clear will be disabled.
+     * all buttons except the Clear button will be disabled.
      */
     private boolean isResultDisplayed;
 
@@ -62,77 +62,77 @@ public class MainActivity extends AppCompatActivity {
         numZeroBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(numZeroBtn.getText().toString());
+                onClickOperandPlusHelper(numZeroBtn.getText().toString());
             }
         });
 
         numOneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(numOneBtn.getText().toString());
+                onClickOperandPlusHelper(numOneBtn.getText().toString());
             }
         });
 
         numTwoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(numTwoBtn.getText().toString());
+                onClickOperandPlusHelper(numTwoBtn.getText().toString());
             }
         });
 
         numThreeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(numThreeBtn.getText().toString());
+                onClickOperandPlusHelper(numThreeBtn.getText().toString());
             }
         });
 
         numFourBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(numFourBtn.getText().toString());
+                onClickOperandPlusHelper(numFourBtn.getText().toString());
             }
         });
 
         numFiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(numFiveBtn.getText().toString());
+                onClickOperandPlusHelper(numFiveBtn.getText().toString());
             }
         });
 
         numSixBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(numSixBtn.getText().toString());
+                onClickOperandPlusHelper(numSixBtn.getText().toString());
             }
         });
 
         numSevenBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(numSevenBtn.getText().toString());
+                onClickOperandPlusHelper(numSevenBtn.getText().toString());
             }
         });
 
         numEightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(numEightBtn.getText().toString());
+                onClickOperandPlusHelper(numEightBtn.getText().toString());
             }
         });
 
         numNineBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(numNineBtn.getText().toString());
+                onClickOperandPlusHelper(numNineBtn.getText().toString());
             }
         });
 
         decimalBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(decimalBtn.getText().toString());
+                onClickOperandPlusHelper(decimalBtn.getText().toString());
             }
         });
 
@@ -140,28 +140,28 @@ public class MainActivity extends AppCompatActivity {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(addBtn.getText().toString());
+                onClickOperatorHelper(addBtn.getText().toString());
             }
         });
 
         subtractBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(subtractBtn.getText().toString());
+                onClickOperatorHelper(subtractBtn.getText().toString());
             }
         });
 
         multiplyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(multiplyBtn.getText().toString());
+                onClickOperatorHelper(multiplyBtn.getText().toString());
             }
         });
 
         divideBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(divideBtn.getText().toString());
+                onClickOperatorHelper(divideBtn.getText().toString());
             }
         });
 
@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (isResultDisplayed) {
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            "Please press the Clear button first.",
+                            R.string.warning_message_press_clear_first,
                             Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
@@ -258,10 +258,10 @@ public class MainActivity extends AppCompatActivity {
                     Iterator leader = expressionList.iterator();
 
 
-
+                    // ----------------------------------------------------------------------------
 
 //                    Iterator follower = expressionList.iterator();
-//                    Iterator ff = expressionList.iterator(); // The follower's follower.
+//                    // Iterator ff = expressionList.iterator(); // The follower's follower.
 //
 //                    // Used to make sure the three iterators are in
 //                    // one line instead of jumping ahead of one another.
@@ -289,6 +289,8 @@ public class MainActivity extends AppCompatActivity {
 //                    }
 
 
+
+                    // ----------------------------------------------------------------------------
 
                     // Resetting iterators:
                     leader = expressionList.iterator();
@@ -324,7 +326,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
 
 
-                                // Resetting the operands check:
+                                // Resetting the operators check:
                                 isAddition = false;
                                 isSubtraction = false;
                             }
@@ -345,17 +347,45 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
-    private void onClickHelper(final String display) {
+    /* It's named OperandPlus because all of the number buttons use
+     * this method as well as the decimal button.
+     */
+    private void onClickOperandPlusHelper(final String display) {
         if (isResultDisplayed) {
             Toast toast = Toast.makeText(getApplicationContext(),
-                    "Please press the Clear button first.",
+                    R.string.warning_message_press_clear_first,
                     Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
         } else {
             calcEditText.setText(calcEditText.getText().toString() +
                     display);
+        }
+    }
+
+    private void onClickOperatorHelper(final String display) {
+        Toast toast = new Toast(getApplicationContext());
+        boolean isReadyToShow = false;
+
+        if (isResultDisplayed) {
+            toast = Toast.makeText(getApplicationContext(),
+                    R.string.warning_message_press_clear_first,
+                    Toast.LENGTH_SHORT);
+            isReadyToShow = true;
+
+        } else if (calcEditText.getText().toString().isEmpty()) {
+            toast = Toast.makeText(getApplicationContext(),
+                    R.string.warning_message_press_num_first,
+                    Toast.LENGTH_SHORT);
+            isReadyToShow = true;
+        }else {
+            calcEditText.setText(calcEditText.getText().toString() +
+                    display);
+        }
+
+        if (isReadyToShow) {
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
         }
     }
 
