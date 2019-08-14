@@ -125,6 +125,11 @@ public class MainActivity extends AppCompatActivity {
                                 "Please select another number first.", Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER, 0, 0);
                         toast.show();
+                    } else if (strExpression.length() == 1) { // Only one number pressed:
+                        isResultDisplayed = true;
+                        result = Double.parseDouble(strExpression);
+
+                        calcEditText.setText(strExpression + "=" + ((int) result));
                     } else {
 
                         // Disabling every other button except the Clear button.
