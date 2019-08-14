@@ -215,17 +215,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
-
-
-
-
-
-
-
-
-
         equalsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -294,7 +283,6 @@ public class MainActivity extends AppCompatActivity {
                      */
                     int backToBackCounter = 0;
 
-                    // ----------------------------------------------------------------------------
 
                     boolean isMultiplication = false;
                     boolean isDivision = false;
@@ -321,20 +309,12 @@ public class MainActivity extends AppCompatActivity {
                                 backToBackCounter = 0;
                             }
 
-                        }else if (currentNode.equals(operators[2])) {
-                            isMultiplication = true;
+                        }else if (currentNode.equals(operators[2]) ||
+                                    currentNode.equals(operators[3])) {
+                            // Multiplication and division:
 
-                            if (backToBackCounter > 0) {
-                                firstOperand = Double.parseDouble( (String) ((LinkedList<String>) newList).remove());
-                            } else {
-                                firstOperand = Double.parseDouble((String) follower.next());
-                            }
-
-                            follower.next();
-                            backToBackCounter++;
-
-                        } else if (currentNode.equals(operators[3])) {
-                            isDivision = true;
+                            isMultiplication = currentNode.equals(operators[2]);
+                            isDivision = currentNode.equals(operators[3]);
 
                             if (backToBackCounter > 0) {
                                 firstOperand = Double.parseDouble( (String) ((LinkedList<String>) newList).remove());
@@ -381,7 +361,6 @@ public class MainActivity extends AppCompatActivity {
 
                     expressionList = new LinkedList<String>(newList);
 
-                    // ----------------------------------------------------------------------------
 
                     // Resetting iterators:
                     leader = expressionList.iterator();
@@ -405,7 +384,7 @@ public class MainActivity extends AppCompatActivity {
 
                             // Capturing the values:
                             if (indexCounter == 0) {
-                                result = Double.parseDouble(currentNode); // TODO: change code b/c this will destroy the value developed from the code above
+                                result = Double.parseDouble(currentNode);
                             } else if (indexCounter % 2 == 0) {
                                 secondOperand = Double.parseDouble(currentNode);
 
@@ -415,7 +394,6 @@ public class MainActivity extends AppCompatActivity {
                                 } else if (isSubtraction) {
                                     result -= secondOperand;
                                 }
-
 
                                 // Resetting the operators check:
                                 isAddition = false;
@@ -427,7 +405,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     // Result:
-                    if (isDouble) {
+                    if (isDouble || result != Math.floor(result)) {
                         calcEditText.setText(strExpression + "=" + result);
                     } else {
                         calcEditText.setText(strExpression + "=" + ((int) result));
@@ -457,20 +435,35 @@ public class MainActivity extends AppCompatActivity {
         Toast toast = new Toast(getApplicationContext());
         boolean isReadyToShow = false;
 
+        final String current = calcEditText.getText().toString();
+
+
         if (isResultDisplayed) {
             toast = Toast.makeText(getApplicationContext(),
                     R.string.warning_message_press_clear_first,
                     Toast.LENGTH_SHORT);
             isReadyToShow = true;
 
-        } else if (calcEditText.getText().toString().isEmpty()) {
+        } else if (current.isEmpty()) {
             toast = Toast.makeText(getApplicationContext(),
                     R.string.warning_message_press_num_first,
                     Toast.LENGTH_SHORT);
             isReadyToShow = true;
-        }else {
-            calcEditText.setText(calcEditText.getText().toString() +
-                    display);
+        } else {
+
+            String lastChar = current.substring(current.length() - 1);
+
+            // Preventing two, or more, operators from being adjacent to each other:
+            if (lastChar.equals(operators[0]) || lastChar.equals(operators[1]) ||
+                    lastChar.equals(operators[2]) || lastChar.equals(operators[3])) {
+
+                if (!lastChar.equals(display)) {
+                    calcEditText.setText(current.substring(0, current.length() - 1) +
+                            display);
+                }
+            } else {
+                calcEditText.setText(current + display);
+            }
         }
 
         if (isReadyToShow) {
