@@ -206,10 +206,10 @@ public class MainActivity extends AppCompatActivity {
                             if (currentNode.equals(operators[0]) ||
                                     currentNode.equals(operators[1])) { // Addition or subtraction:
 
-                                ((LinkedList<String>) newList).addFirst((String) follower.next());
+                                ((LinkedList<String>) newList).add((String) follower.next());
 
                                 if (backToBackCounter == 0) {
-                                    ((LinkedList<String>) newList).addFirst(currentNode);
+                                    ((LinkedList<String>) newList).add(currentNode);
 
                                     /* Ignoring the addition/subtraction
                                      * operator and looking at the next
@@ -229,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
                                 isDivision = currentNode.equals(operators[3]);
 
                                 if (backToBackCounter > 0) {
-                                    firstOperand = Double.parseDouble( (String) ((LinkedList<String>) newList).remove());
+                                    firstOperand = Double.parseDouble( (String) ((LinkedList<String>) newList).removeLast());
                                 } else {
                                     firstOperand = Double.parseDouble((String) follower.next());
                                 }
@@ -259,14 +259,14 @@ public class MainActivity extends AppCompatActivity {
                                     }
 
                                     // Storing new result:
-                                    ((LinkedList<String>) newList).addFirst("" + tempResult);
+                                    ((LinkedList<String>) newList).add("" + tempResult);
                                 } else if (follower.hasNext() && !leader.hasNext()) {
                                     /* Capturing the last numerical value if
                                      * the last operation was either an
                                      * addition or subtraction.
                                      */
 
-                                    ((LinkedList<String>) newList).addFirst((String) follower.next());
+                                    ((LinkedList<String>) newList).add((String) follower.next());
                                 }
                             }
                         } // End of while()
