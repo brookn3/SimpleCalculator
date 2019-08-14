@@ -1,9 +1,12 @@
 package edu.tacoma.uw.css.brookn3.simplecalculator;
 
+import android.content.Context;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -11,7 +14,6 @@ import android.widget.Toast;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Initializing fields:
         setupUIViews();
-
 
         expressionList = new LinkedList<String>();
         result = 0;
