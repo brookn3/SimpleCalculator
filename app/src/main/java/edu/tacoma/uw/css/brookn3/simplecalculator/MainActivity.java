@@ -14,6 +14,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String[] operators = {"+", "-", "*", "/"};
+
     private Button numZeroBtn;
     private Button numOneBtn;
     private Button numTwoBtn;
@@ -36,11 +38,11 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText calcEditText;
 
-    private List<Object> expressionList;
+    private List<String> expressionList;
     private double result;
 
     /* Once a user presses the equals sign,
-     * all buttons except the Clear will be disabled.
+     * all buttons except the Clear button will be disabled.
      */
     private boolean isResultDisplayed;
 
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         // Initializing fields:
         setupUIViews();
 
-        expressionList = new LinkedList<Object>();
+        expressionList = new LinkedList<String>();
         result = 0;
         isResultDisplayed = false;
 
@@ -62,77 +64,92 @@ public class MainActivity extends AppCompatActivity {
         numZeroBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(numZeroBtn.getText().toString());
+                onClickOperandPlusHelper(numZeroBtn.getText().toString());
             }
         });
 
         numOneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(numOneBtn.getText().toString());
+                onClickOperandPlusHelper(numOneBtn.getText().toString());
             }
         });
 
         numTwoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(numTwoBtn.getText().toString());
+                onClickOperandPlusHelper(numTwoBtn.getText().toString());
             }
         });
 
         numThreeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(numThreeBtn.getText().toString());
+                onClickOperandPlusHelper(numThreeBtn.getText().toString());
             }
         });
 
         numFourBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(numFourBtn.getText().toString());
+                onClickOperandPlusHelper(numFourBtn.getText().toString());
             }
         });
 
         numFiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(numFiveBtn.getText().toString());
+                onClickOperandPlusHelper(numFiveBtn.getText().toString());
             }
         });
 
         numSixBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(numSixBtn.getText().toString());
+                onClickOperandPlusHelper(numSixBtn.getText().toString());
             }
         });
 
         numSevenBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(numSevenBtn.getText().toString());
+                onClickOperandPlusHelper(numSevenBtn.getText().toString());
             }
         });
 
         numEightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(numEightBtn.getText().toString());
+                onClickOperandPlusHelper(numEightBtn.getText().toString());
             }
         });
 
         numNineBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(numNineBtn.getText().toString());
+                onClickOperandPlusHelper(numNineBtn.getText().toString());
             }
         });
 
         decimalBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(decimalBtn.getText().toString());
+
+                String current = calcEditText.getText().toString();
+
+                /* Special checks placed to place a zero in front
+                 * of the decimal, when needed.
+                 */
+                if (current.isEmpty()) {
+                    onClickOperandPlusHelper("0" + decimalBtn.getText().toString());
+                } else {
+
+                    if (isLastCharAnOperator(current)) {
+                        onClickOperandPlusHelper("0" + decimalBtn.getText().toString());
+                    } else {
+                        onClickOperandPlusHelper(decimalBtn.getText().toString());
+                    }
+                }
             }
         });
 
@@ -140,28 +157,28 @@ public class MainActivity extends AppCompatActivity {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(addBtn.getText().toString());
+                onClickOperatorHelper(addBtn.getText().toString());
             }
         });
 
         subtractBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(subtractBtn.getText().toString());
+                onClickOperatorHelper(subtractBtn.getText().toString());
             }
         });
 
         multiplyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(multiplyBtn.getText().toString());
+                onClickOperatorHelper(multiplyBtn.getText().toString());
             }
         });
 
         divideBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickHelper(divideBtn.getText().toString());
+                onClickOperatorHelper(divideBtn.getText().toString());
             }
         });
 
@@ -179,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (isResultDisplayed) {
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            "Please press the Clear button first.",
+                            R.string.warning_message_press_clear_first,
                             Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
@@ -193,17 +210,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
-
-
-
-
-
-
-
-
-
         equalsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -212,144 +218,216 @@ public class MainActivity extends AppCompatActivity {
 
                 if (!strExpression.isEmpty() && !isResultDisplayed) {
 
-                    // Disabling every other button except the Clear button.
-                    isResultDisplayed = true;
+                    if (isLastCharAnOperator(strExpression)) {
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Please select another number first.", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                    } else {
 
-                    expressionList = new LinkedList<Object>();
-                    result = 0;
+                        // Disabling every other button except the Clear button.
+                        isResultDisplayed = true;
 
-                    boolean isDouble = false;
-                    int exprSize = strExpression.length();
-                    String[] operators = {"+", "-", "*", "/"};
+                        expressionList = new LinkedList<String>();
+                        result = 0;
 
-                    // Capturing the first token:
-                    String previous = strExpression.substring(0, 1);
-                    String current;
+                        boolean isDouble = false;
+                        int exprSize = strExpression.length();
 
-                    // Traversing the strExpression to capture the operators and operands
-                    // and building on the "expressionList" LinkedList:
-                    for (int i = 1; i < exprSize; i++) {
-                        current = strExpression.substring(i, i + 1);
 
-                        if (current.equals(".")) { // The number is a decimal
-                            isDouble = true;
+                        // Capturing the first token:
+                        String previous = strExpression.substring(0, 1);
+                        String current;
 
-                            previous = previous + current;
-                        } else if (current.equals(operators[0]) || current.equals(operators[1]) ||
-                                current.equals(operators[2]) || current.equals(operators[3])) {
+                        // Traversing the strExpression to capture the operators and operands
+                        // and building on the "expressionList" LinkedList:
+                        for (int i = 1; i < exprSize; i++) {
+                            current = strExpression.substring(i, i + 1);
 
-                            expressionList.add(previous); // Still stored as a String Object.
-                            expressionList.add(current);
+                            if (current.equals(".")) { // The number is a decimal
+                                isDouble = true;
 
-                            previous = new String();
+                                previous = previous + current;
 
-                        } else { // TODO: Make sure to check for all possible inputs later!!!
-                            previous = previous + current;
+                                if (i == exprSize - 1) { // Last token:
+                                    expressionList.add(previous);
+                                }
+                            } else if (isLastCharAnOperator(current)) {
 
-                            if (i == exprSize - 1) { // last digit
-                                expressionList.add(previous);
+                                expressionList.add(previous); // Still stored as a String Object.
+                                expressionList.add(current);
+
+                                previous = new String();
+
+                            } else {
+                                previous = previous + current;
+
+                                if (i == exprSize - 1) { // Last digit:
+                                    expressionList.add(previous);
+                                }
                             }
                         }
-                    }
 
 
-                    // Traversing the newly built list (LinkedList) and
-                    // completing the calculation following the PEMDOS property:
-                    Iterator leader = expressionList.iterator();
+                        // Traversing the newly built list (LinkedList) and
+                        // completing the calculation following the PEMDOS property:
+                        Iterator leader = expressionList.iterator();
+                        Iterator follower = expressionList.iterator();
+
+                        List<String> newList = new LinkedList<String>();
+
+                        double firstOperand = 0;
+                        double secondOperand = 0;
+
+                        double tempResult;
+
+                        /* Incremented when the operator is a
+                         * multiplication or division and then
+                         * the next operator is either a multiplication
+                         * or division.
+                         */
+                        int backToBackCounter = 0;
 
 
+                        boolean isMultiplication = false;
+                        boolean isDivision = false;
 
+                        // Computing any multiplication and division here:
+                        while (leader.hasNext()) {
+                            String currentNode = (String) leader.next();
 
-//                    Iterator follower = expressionList.iterator();
-//                    Iterator ff = expressionList.iterator(); // The follower's follower.
-//
-//                    // Used to make sure the three iterators are in
-//                    // one line instead of jumping ahead of one another.
-//                    int counter = 0;
-//
-//                    // Computing any multiplication and division here:
-//                    while (leader.hasNext()) {
-//                        String currentNode = (String) leader.next();
-//
-//                        if (currentNode.equals(operators[2])) {
-//
-//
-//                        } else if (currentNode.equals(operators[3])) {
-//
-//                        } else {
-//                            if (counter >= 1) {
-//                                follower.next();
-//                            }
-//                            if (counter >= 2) {
-//                                ff.next();
-//                            }
-//                        }
-//
-//                        counter++;
-//                    }
+                            if (currentNode.equals(operators[0]) ||
+                                    currentNode.equals(operators[1])) { // Addition or subtraction:
 
+                                ((LinkedList<String>) newList).addFirst((String) follower.next());
 
+                                if (backToBackCounter == 0) {
+                                    ((LinkedList<String>) newList).addFirst(currentNode);
 
-                    // Resetting iterators:
-                    leader = expressionList.iterator();
-
-                    double secondOperand = 0;
-                    boolean isAddition = false;
-                    boolean isSubtraction = false;
-
-                    int indexCounter = 0;
-                    String currentNode;
-
-                    // Computing addition and subtraction here:
-                    while (leader.hasNext()) {
-                        currentNode = (String) leader.next();
-
-                        if (currentNode.equals(operators[0])) { // Addition:
-                            isAddition = true;
-                        } else if (currentNode.equals(operators[1])) { // Subtraction:
-                            isSubtraction = true;
-                        } else {
-
-                            // Capturing the values:
-                            if (indexCounter == 0) {
-                                result = Double.parseDouble(currentNode); // TODO: change code b/c this will destroy the value developed from the code above
-                            } else if (indexCounter % 2 == 0) {
-                                secondOperand = Double.parseDouble(currentNode);
-
-                                // Calculating part of the expression:
-                                if (isAddition) {
-                                    result += secondOperand;
-                                } else if (isSubtraction) {
-                                    result -= secondOperand;
+                                    /* Ignoring the addition/subtraction
+                                     * operator and looking at the next
+                                     * number which is exactly where the
+                                     * leader iterator is currently at.
+                                     */
+                                    follower.next();
+                                } else {
+                                    backToBackCounter = 0;
                                 }
 
+                            }else if (currentNode.equals(operators[2]) ||
+                                    currentNode.equals(operators[3])) {
+                                // Multiplication and division:
 
-                                // Resetting the operands check:
-                                isAddition = false;
-                                isSubtraction = false;
+                                isMultiplication = currentNode.equals(operators[2]);
+                                isDivision = currentNode.equals(operators[3]);
+
+                                if (backToBackCounter > 0) {
+                                    firstOperand = Double.parseDouble( (String) ((LinkedList<String>) newList).remove());
+                                } else {
+                                    firstOperand = Double.parseDouble((String) follower.next());
+                                }
+
+                                follower.next();
+                                backToBackCounter++;
+
+                            } else { // This section means the currentNode is a numerical value:
+
+                                /* This check ignores the numerical
+                                 * values, which are always kept track
+                                 * by the follower iterator, and when
+                                 * the operator is known, to be
+                                 * multiplication or division then the
+                                 * calculation is completed.
+                                 */
+                                if (isMultiplication || isDivision) {
+                                    tempResult = 0;
+                                    secondOperand = Double.parseDouble((String) follower.next());
+
+                                    if (isMultiplication) {
+                                        tempResult = firstOperand * secondOperand;
+                                        isMultiplication = false;
+                                    } else if (isDivision) {
+                                        tempResult = firstOperand / secondOperand;
+                                        isDivision = false;
+                                    }
+
+                                    // Storing new result:
+                                    ((LinkedList<String>) newList).addFirst("" + tempResult);
+                                } else if (follower.hasNext() && !leader.hasNext()) {
+                                    /* Capturing the last numerical value if
+                                     * the last operation was either an
+                                     * addition or subtraction.
+                                     */
+
+                                    ((LinkedList<String>) newList).addFirst((String) follower.next());
+                                }
                             }
+                        } // End of while()
+
+                        expressionList = new LinkedList<String>(newList);
+
+
+                        // Resetting iterators:
+                        leader = expressionList.iterator();
+
+                        secondOperand = 0;
+                        boolean isAddition = false;
+                        boolean isSubtraction = false;
+
+                        int indexCounter = 0;
+                        String currentNode;
+
+                        // Computing addition and subtraction here:
+                        while (leader.hasNext()) {
+                            currentNode = (String) leader.next();
+
+                            if (currentNode.equals(operators[0])) { // Addition:
+                                isAddition = true;
+                            } else if (currentNode.equals(operators[1])) { // Subtraction:
+                                isSubtraction = true;
+                            } else {
+
+                                // Capturing the values:
+                                if (indexCounter == 0) {
+                                    result = Double.parseDouble(currentNode);
+                                } else if (indexCounter % 2 == 0) {
+                                    secondOperand = Double.parseDouble(currentNode);
+
+                                    // Calculating part of the expression:
+                                    if (isAddition) {
+                                        result += secondOperand;
+                                    } else if (isSubtraction) {
+                                        result -= secondOperand;
+                                    }
+
+                                    // Resetting the operators check:
+                                    isAddition = false;
+                                    isSubtraction = false;
+                                }
+                            }
+
+                            indexCounter++;
                         }
 
-                        indexCounter++;
-                    }
-
-                    // Result:
-                    if (isDouble) { // TODO: Figure out how you want to display the result & make
-                                    // TODO: sure to put an equals sign prior to displaying the result:
-                        calcEditText.setText(strExpression + "=" + result);
-                    } else {
-                        calcEditText.setText(strExpression + "=" + ((int) result));
+                        // Result:
+                        if (isDouble || result != Math.floor(result)) {
+                            calcEditText.setText(strExpression + "=" + result);
+                        } else {
+                            calcEditText.setText(strExpression + "=" + ((int) result));
+                        }
                     }
                 }
             }
         });
     }
 
-
-    private void onClickHelper(final String display) {
+    /* It's named OperandPlus because all of the number buttons use
+     * this method as well as the decimal button.
+     */
+    private void onClickOperandPlusHelper(final String display) {
         if (isResultDisplayed) {
             Toast toast = Toast.makeText(getApplicationContext(),
-                    "Please press the Clear button first.",
+                    R.string.warning_message_press_clear_first,
                     Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
@@ -357,6 +435,61 @@ public class MainActivity extends AppCompatActivity {
             calcEditText.setText(calcEditText.getText().toString() +
                     display);
         }
+    }
+
+    private void onClickOperatorHelper(final String display) {
+        Toast toast = new Toast(getApplicationContext());
+        boolean isReadyToShow = false;
+
+        final String current = calcEditText.getText().toString();
+
+
+        if (isResultDisplayed) {
+            toast = Toast.makeText(getApplicationContext(),
+                    R.string.warning_message_press_clear_first,
+                    Toast.LENGTH_SHORT);
+            isReadyToShow = true;
+
+        } else if (current.isEmpty()) {
+            toast = Toast.makeText(getApplicationContext(),
+                    R.string.warning_message_press_num_first,
+                    Toast.LENGTH_SHORT);
+            isReadyToShow = true;
+        } else {
+
+            String lastChar = current.substring(current.length() - 1);
+
+            // Preventing two, or more, operators from being adjacent to each other:
+            if (isLastCharAnOperator(lastChar)) {
+
+                if (!lastChar.equals(display)) {
+                    calcEditText.setText(current.substring(0, current.length() - 1) +
+                            display);
+                }
+            } else {
+                calcEditText.setText(current + display);
+            }
+        }
+
+        if (isReadyToShow) {
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        }
+    }
+
+    private boolean isLastCharAnOperator(final String theChar) {
+        boolean isOperator = false;
+
+        if (theChar != null && !theChar.isEmpty()) {
+            final String lastChar = theChar.substring(theChar.length() - 1);
+
+            if (lastChar.equals(operators[0]) || lastChar.equals(operators[1]) ||
+                    lastChar.equals(operators[2]) || lastChar.equals(operators[3])) {
+                isOperator = true;
+            }
+        }
+
+        return isOperator;
     }
 
     private void setupUIViews() {
