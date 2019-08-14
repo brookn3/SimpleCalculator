@@ -59,126 +59,29 @@ public class MainActivity extends AppCompatActivity {
         isResultDisplayed = false;
 
 
-
-        // Defining a listener for each object:
-        numZeroBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickOperandPlusHelper(numZeroBtn.getText().toString());
-            }
-        });
-
-        numOneBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickOperandPlusHelper(numOneBtn.getText().toString());
-            }
-        });
-
-        numTwoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickOperandPlusHelper(numTwoBtn.getText().toString());
-            }
-        });
-
-        numThreeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickOperandPlusHelper(numThreeBtn.getText().toString());
-            }
-        });
-
-        numFourBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickOperandPlusHelper(numFourBtn.getText().toString());
-            }
-        });
-
-        numFiveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickOperandPlusHelper(numFiveBtn.getText().toString());
-            }
-        });
-
-        numSixBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickOperandPlusHelper(numSixBtn.getText().toString());
-            }
-        });
-
-        numSevenBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickOperandPlusHelper(numSevenBtn.getText().toString());
-            }
-        });
-
-        numEightBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickOperandPlusHelper(numEightBtn.getText().toString());
-            }
-        });
-
-        numNineBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickOperandPlusHelper(numNineBtn.getText().toString());
-            }
-        });
-
+        // Defining a few of the listeners for some objects:
         decimalBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 String current = calcEditText.getText().toString();
-
                 /* Special checks placed to place a zero in front
                  * of the decimal, when needed.
                  */
-                if (current.isEmpty()) {
-                    onClickOperandPlusHelper("0" + decimalBtn.getText().toString());
+                String display = current.isEmpty() || isLastCharAnOperator(current)
+                        ? "0" : "";
+                display += decimalBtn.getText().toString();
+
+                if (isResultDisplayed) {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            R.string.warning_message_press_clear_first,
+                            Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                 } else {
-
-                    if (isLastCharAnOperator(current)) {
-                        onClickOperandPlusHelper("0" + decimalBtn.getText().toString());
-                    } else {
-                        onClickOperandPlusHelper(decimalBtn.getText().toString());
-                    }
+                    calcEditText.setText(calcEditText.getText().toString() +
+                            display);
                 }
-            }
-        });
-
-
-        addBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickOperatorHelper(addBtn.getText().toString());
-            }
-        });
-
-        subtractBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickOperatorHelper(subtractBtn.getText().toString());
-            }
-        });
-
-        multiplyBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickOperatorHelper(multiplyBtn.getText().toString());
-            }
-        });
-
-        divideBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickOperatorHelper(divideBtn.getText().toString());
             }
         });
 
@@ -186,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 calcEditText.setText(new String());
-
                 isResultDisplayed = false;
             }
         });
@@ -421,10 +323,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /* It's named OperandPlus because all of the number buttons use
-     * this method as well as the decimal button.
-     */
-    private void onClickOperandPlusHelper(final String display) {
+
+    public void onClickOperandHelper(View v) {
         if (isResultDisplayed) {
             Toast toast = Toast.makeText(getApplicationContext(),
                     R.string.warning_message_press_clear_first,
@@ -432,16 +332,19 @@ public class MainActivity extends AppCompatActivity {
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
         } else {
+            String display = ((Button) findViewById(v.getId())).getText().toString();
+
             calcEditText.setText(calcEditText.getText().toString() +
                     display);
         }
     }
 
-    private void onClickOperatorHelper(final String display) {
+    public void onClickOperatorHelper(View v) {
         Toast toast = new Toast(getApplicationContext());
         boolean isReadyToShow = false;
 
         final String current = calcEditText.getText().toString();
+        String display = ((Button) findViewById(v.getId())).getText().toString();
 
 
         if (isResultDisplayed) {
