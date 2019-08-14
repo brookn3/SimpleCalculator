@@ -1,12 +1,9 @@
 package edu.tacoma.uw.css.brookn3.simplecalculator;
 
-import android.content.Context;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -147,10 +144,7 @@ public class MainActivity extends AppCompatActivity {
                     onClickOperandPlusHelper("0" + decimalBtn.getText().toString());
                 } else {
 
-                    String lastChar = current.substring(current.length() - 1);
-
-                    if (lastChar.equals(operators[0]) || lastChar.equals(operators[1]) ||
-                            lastChar.equals(operators[2]) || lastChar.equals(operators[3])) {
+                    if (isLastCharAnOperator(current)) {
                         onClickOperandPlusHelper("0" + decimalBtn.getText().toString());
                     } else {
                         onClickOperandPlusHelper(decimalBtn.getText().toString());
@@ -224,192 +218,203 @@ public class MainActivity extends AppCompatActivity {
 
                 if (!strExpression.isEmpty() && !isResultDisplayed) {
 
-                    // Disabling every other button except the Clear button.
-                    isResultDisplayed = true;
+                    if (isLastCharAnOperator(strExpression)) {
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Please select another number first.", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                    } else {
 
-                    expressionList = new LinkedList<String>();
-                    result = 0;
+                        // Disabling every other button except the Clear button.
+                        isResultDisplayed = true;
 
-                    boolean isDouble = false;
-                    int exprSize = strExpression.length();
+                        expressionList = new LinkedList<String>();
+                        result = 0;
+
+                        boolean isDouble = false;
+                        int exprSize = strExpression.length();
 
 
-                    // Capturing the first token:
-                    String previous = strExpression.substring(0, 1);
-                    String current;
+                        // Capturing the first token:
+                        String previous = strExpression.substring(0, 1);
+                        String current;
 
-                    // Traversing the strExpression to capture the operators and operands
-                    // and building on the "expressionList" LinkedList:
-                    for (int i = 1; i < exprSize; i++) {
-                        current = strExpression.substring(i, i + 1);
+                        // Traversing the strExpression to capture the operators and operands
+                        // and building on the "expressionList" LinkedList:
+                        for (int i = 1; i < exprSize; i++) {
+                            current = strExpression.substring(i, i + 1);
 
-                        if (current.equals(".")) { // The number is a decimal
-                            isDouble = true;
+                            if (current.equals(".")) { // The number is a decimal
+                                isDouble = true;
 
-                            previous = previous + current;
-                        } else if (current.equals(operators[0]) || current.equals(operators[1]) ||
-                                current.equals(operators[2]) || current.equals(operators[3])) {
+                                previous = previous + current;
 
-                            expressionList.add(previous); // Still stored as a String Object.
-                            expressionList.add(current);
+                                if (i == exprSize - 1) { // Last token:
+                                    expressionList.add(previous);
+                                }
+                            } else if (isLastCharAnOperator(current)) {
 
-                            previous = new String();
+                                expressionList.add(previous); // Still stored as a String Object.
+                                expressionList.add(current);
 
-                        } else { // TODO: Make sure to check for all possible inputs later!!!
-                            previous = previous + current;
+                                previous = new String();
 
-                            if (i == exprSize - 1) { // last digit
-                                expressionList.add(previous);
+                            } else {
+                                previous = previous + current;
+
+                                if (i == exprSize - 1) { // Last digit:
+                                    expressionList.add(previous);
+                                }
                             }
                         }
-                    }
 
 
-                    // Traversing the newly built list (LinkedList) and
-                    // completing the calculation following the PEMDOS property:
-                    Iterator leader = expressionList.iterator();
-                    Iterator follower = expressionList.iterator();
+                        // Traversing the newly built list (LinkedList) and
+                        // completing the calculation following the PEMDOS property:
+                        Iterator leader = expressionList.iterator();
+                        Iterator follower = expressionList.iterator();
 
-                    List<String> newList = new LinkedList<String>();
+                        List<String> newList = new LinkedList<String>();
 
-                    double firstOperand = 0;
-                    double secondOperand = 0;
+                        double firstOperand = 0;
+                        double secondOperand = 0;
 
-                    double tempResult;
+                        double tempResult;
 
-                    /* Incremented when the operator is a
-                     * multiplication or division and then
-                     * the next operator is either a multiplication
-                     * or division.
-                     */
-                    int backToBackCounter = 0;
+                        /* Incremented when the operator is a
+                         * multiplication or division and then
+                         * the next operator is either a multiplication
+                         * or division.
+                         */
+                        int backToBackCounter = 0;
 
 
-                    boolean isMultiplication = false;
-                    boolean isDivision = false;
+                        boolean isMultiplication = false;
+                        boolean isDivision = false;
 
-                    // Computing any multiplication and division here:
-                    while (leader.hasNext()) {
-                        String currentNode = (String) leader.next();
+                        // Computing any multiplication and division here:
+                        while (leader.hasNext()) {
+                            String currentNode = (String) leader.next();
 
-                        if (currentNode.equals(operators[0]) ||
-                                currentNode.equals(operators[1])) { // Addition or subtraction:
-
-                            ((LinkedList<String>) newList).addFirst((String) follower.next());
-
-                            if (backToBackCounter == 0) {
-                                ((LinkedList<String>) newList).addFirst(currentNode);
-
-                                /* Ignoring the addition/subtraction
-                                 * operator and looking at the next
-                                 * number which is exactly where the
-                                 * leader iterator is currently at.
-                                 */
-                                follower.next();
-                            } else {
-                                backToBackCounter = 0;
-                            }
-
-                        }else if (currentNode.equals(operators[2]) ||
-                                    currentNode.equals(operators[3])) {
-                            // Multiplication and division:
-
-                            isMultiplication = currentNode.equals(operators[2]);
-                            isDivision = currentNode.equals(operators[3]);
-
-                            if (backToBackCounter > 0) {
-                                firstOperand = Double.parseDouble( (String) ((LinkedList<String>) newList).remove());
-                            } else {
-                                firstOperand = Double.parseDouble((String) follower.next());
-                            }
-
-                            follower.next();
-                            backToBackCounter++;
-
-                        } else { // This section means the currentNode is a numerical value:
-
-                            /* This check ignores the numerical
-                             * values, which are always kept track
-                             * by the follower iterator, and when
-                             * the operator is known, to be
-                             * multiplication or division then the
-                             * calculation is completed.
-                             */
-                            if (isMultiplication || isDivision) {
-                                tempResult = 0;
-                                secondOperand = Double.parseDouble((String) follower.next());
-
-                                if (isMultiplication) {
-                                    tempResult = firstOperand * secondOperand;
-                                    isMultiplication = false;
-                                } else if (isDivision) {
-                                    tempResult = firstOperand / secondOperand;
-                                    isDivision = false;
-                                }
-
-                                // Storing new result:
-                                ((LinkedList<String>) newList).addFirst("" + tempResult);
-                            } else if (follower.hasNext() && !leader.hasNext()) {
-                                /* Capturing the last numerical value if
-                                 * the last operation was either an
-                                 * addition or subtraction.
-                                 */
+                            if (currentNode.equals(operators[0]) ||
+                                    currentNode.equals(operators[1])) { // Addition or subtraction:
 
                                 ((LinkedList<String>) newList).addFirst((String) follower.next());
-                            }
-                        }
-                    } // End of while()
 
-                    expressionList = new LinkedList<String>(newList);
+                                if (backToBackCounter == 0) {
+                                    ((LinkedList<String>) newList).addFirst(currentNode);
 
-
-                    // Resetting iterators:
-                    leader = expressionList.iterator();
-
-                    secondOperand = 0;
-                    boolean isAddition = false;
-                    boolean isSubtraction = false;
-
-                    int indexCounter = 0;
-                    String currentNode;
-
-                    // Computing addition and subtraction here:
-                    while (leader.hasNext()) {
-                        currentNode = (String) leader.next();
-
-                        if (currentNode.equals(operators[0])) { // Addition:
-                            isAddition = true;
-                        } else if (currentNode.equals(operators[1])) { // Subtraction:
-                            isSubtraction = true;
-                        } else {
-
-                            // Capturing the values:
-                            if (indexCounter == 0) {
-                                result = Double.parseDouble(currentNode);
-                            } else if (indexCounter % 2 == 0) {
-                                secondOperand = Double.parseDouble(currentNode);
-
-                                // Calculating part of the expression:
-                                if (isAddition) {
-                                    result += secondOperand;
-                                } else if (isSubtraction) {
-                                    result -= secondOperand;
+                                    /* Ignoring the addition/subtraction
+                                     * operator and looking at the next
+                                     * number which is exactly where the
+                                     * leader iterator is currently at.
+                                     */
+                                    follower.next();
+                                } else {
+                                    backToBackCounter = 0;
                                 }
 
-                                // Resetting the operators check:
-                                isAddition = false;
-                                isSubtraction = false;
+                            }else if (currentNode.equals(operators[2]) ||
+                                    currentNode.equals(operators[3])) {
+                                // Multiplication and division:
+
+                                isMultiplication = currentNode.equals(operators[2]);
+                                isDivision = currentNode.equals(operators[3]);
+
+                                if (backToBackCounter > 0) {
+                                    firstOperand = Double.parseDouble( (String) ((LinkedList<String>) newList).remove());
+                                } else {
+                                    firstOperand = Double.parseDouble((String) follower.next());
+                                }
+
+                                follower.next();
+                                backToBackCounter++;
+
+                            } else { // This section means the currentNode is a numerical value:
+
+                                /* This check ignores the numerical
+                                 * values, which are always kept track
+                                 * by the follower iterator, and when
+                                 * the operator is known, to be
+                                 * multiplication or division then the
+                                 * calculation is completed.
+                                 */
+                                if (isMultiplication || isDivision) {
+                                    tempResult = 0;
+                                    secondOperand = Double.parseDouble((String) follower.next());
+
+                                    if (isMultiplication) {
+                                        tempResult = firstOperand * secondOperand;
+                                        isMultiplication = false;
+                                    } else if (isDivision) {
+                                        tempResult = firstOperand / secondOperand;
+                                        isDivision = false;
+                                    }
+
+                                    // Storing new result:
+                                    ((LinkedList<String>) newList).addFirst("" + tempResult);
+                                } else if (follower.hasNext() && !leader.hasNext()) {
+                                    /* Capturing the last numerical value if
+                                     * the last operation was either an
+                                     * addition or subtraction.
+                                     */
+
+                                    ((LinkedList<String>) newList).addFirst((String) follower.next());
+                                }
                             }
+                        } // End of while()
+
+                        expressionList = new LinkedList<String>(newList);
+
+
+                        // Resetting iterators:
+                        leader = expressionList.iterator();
+
+                        secondOperand = 0;
+                        boolean isAddition = false;
+                        boolean isSubtraction = false;
+
+                        int indexCounter = 0;
+                        String currentNode;
+
+                        // Computing addition and subtraction here:
+                        while (leader.hasNext()) {
+                            currentNode = (String) leader.next();
+
+                            if (currentNode.equals(operators[0])) { // Addition:
+                                isAddition = true;
+                            } else if (currentNode.equals(operators[1])) { // Subtraction:
+                                isSubtraction = true;
+                            } else {
+
+                                // Capturing the values:
+                                if (indexCounter == 0) {
+                                    result = Double.parseDouble(currentNode);
+                                } else if (indexCounter % 2 == 0) {
+                                    secondOperand = Double.parseDouble(currentNode);
+
+                                    // Calculating part of the expression:
+                                    if (isAddition) {
+                                        result += secondOperand;
+                                    } else if (isSubtraction) {
+                                        result -= secondOperand;
+                                    }
+
+                                    // Resetting the operators check:
+                                    isAddition = false;
+                                    isSubtraction = false;
+                                }
+                            }
+
+                            indexCounter++;
                         }
 
-                        indexCounter++;
-                    }
-
-                    // Result:
-                    if (isDouble || result != Math.floor(result)) {
-                        calcEditText.setText(strExpression + "=" + result);
-                    } else {
-                        calcEditText.setText(strExpression + "=" + ((int) result));
+                        // Result:
+                        if (isDouble || result != Math.floor(result)) {
+                            calcEditText.setText(strExpression + "=" + result);
+                        } else {
+                            calcEditText.setText(strExpression + "=" + ((int) result));
+                        }
                     }
                 }
             }
@@ -455,8 +460,7 @@ public class MainActivity extends AppCompatActivity {
             String lastChar = current.substring(current.length() - 1);
 
             // Preventing two, or more, operators from being adjacent to each other:
-            if (lastChar.equals(operators[0]) || lastChar.equals(operators[1]) ||
-                    lastChar.equals(operators[2]) || lastChar.equals(operators[3])) {
+            if (isLastCharAnOperator(lastChar)) {
 
                 if (!lastChar.equals(display)) {
                     calcEditText.setText(current.substring(0, current.length() - 1) +
@@ -471,6 +475,21 @@ public class MainActivity extends AppCompatActivity {
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
         }
+    }
+
+    private boolean isLastCharAnOperator(final String theChar) {
+        boolean isOperator = false;
+
+        if (theChar != null && !theChar.isEmpty()) {
+            final String lastChar = theChar.substring(theChar.length() - 1);
+
+            if (lastChar.equals(operators[0]) || lastChar.equals(operators[1]) ||
+                    lastChar.equals(operators[2]) || lastChar.equals(operators[3])) {
+                isOperator = true;
+            }
+        }
+
+        return isOperator;
     }
 
     private void setupUIViews() {
