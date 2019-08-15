@@ -135,6 +135,10 @@ public class MainActivity extends AppCompatActivity {
                         // Disabling every other button except the Clear button.
                         isResultDisplayed = true;
 
+                        // If the user tries to divide by zero;
+                        boolean isAnUndefinedStatement = false;
+                        String undefinedStatement = "";
+
                         expressionList = new LinkedList<String>();
                         result = 0;
 
@@ -200,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
                         boolean isDivision = false;
 
                         // Computing any multiplication and division here:
-                        while (leader.hasNext()) {
+                        while (leader.hasNext() && !isAnUndefinedStatement) {
                             String currentNode = (String) leader.next();
 
                             if (currentNode.equals(operators[0]) ||
@@ -254,7 +258,19 @@ public class MainActivity extends AppCompatActivity {
                                         tempResult = firstOperand * secondOperand;
                                         isMultiplication = false;
                                     } else if (isDivision) {
-                                        tempResult = firstOperand / secondOperand;
+
+                                        // Covering undefined cases:
+                                        if (secondOperand == 0) {
+                                            isAnUndefinedStatement = true;
+                                            if (firstOperand == 0) {
+                                                undefinedStatement = "Undefined";
+                                            } else {
+                                                undefinedStatement = "Cannot divide by zero";
+                                            }
+                                        } else {
+                                            tempResult = firstOperand / secondOperand;
+                                        }
+
                                         isDivision = false;
                                     }
 
@@ -285,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
                         String currentNode;
 
                         // Computing addition and subtraction here:
-                        while (leader.hasNext()) {
+                        while (leader.hasNext() && !isAnUndefinedStatement) {
                             currentNode = (String) leader.next();
 
                             if (currentNode.equals(operators[0])) { // Addition:
@@ -317,7 +333,9 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         // Result:
-                        if (isDouble || result != Math.floor(result)) {
+                        if (isAnUndefinedStatement) {
+                            calcEditText.setText(strExpression + "=" + undefinedStatement);
+                        } else if (isDouble || result != Math.floor(result)) {
                             calcEditText.setText(strExpression + "=" + result);
                         } else {
                             calcEditText.setText(strExpression + "=" + ((int) result));
