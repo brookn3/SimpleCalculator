@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SimpleCalculator</string>
+    <string name="app_name">Simple Calculator</string>
     <string name="back_arrow">\u27f5</string>
     <string name="warning_message_press_clear_first">Please press the Clear button first.</string>
     <string name="warning_message_press_num_first">Please select a number first.</string>
