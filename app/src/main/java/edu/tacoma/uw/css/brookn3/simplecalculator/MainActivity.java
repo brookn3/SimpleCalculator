@@ -8,11 +8,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    // Rounding precision:
+    private static final int ROUNDING_PRECISION_TO_DISPLAY = 15;
+    private static final int ROUNDING_WHILE_CALCULATING = 50;
 
     private static final String[] operators = {"+", "-", "*", "/"};
 
@@ -39,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText calcEditText;
 
     private List<String> expressionList;
-    private double result;
+    private BigDecimal bdResult;
 
     /* Once a user presses the equals sign,
      * all buttons except the Clear button will be disabled.
@@ -55,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         setupUIViews();
 
         expressionList = new LinkedList<String>();
-        result = 0;
+        bdResult = BigDecimal.ZERO;
         isResultDisplayed = false;
 
 
@@ -89,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 calcEditText.setText(new String());
+                bdResult = BigDecimal.ZERO;
                 isResultDisplayed = false;
             }
         });
@@ -127,9 +133,10 @@ public class MainActivity extends AppCompatActivity {
                         toast.show();
                     } else if (strExpression.length() == 1) { // Only one number pressed:
                         isResultDisplayed = true;
-                        result = Double.parseDouble(strExpression);
+                        double currentValue = Double.parseDouble(strExpression);
+                        bdResult = BigDecimal.valueOf(currentValue);
 
-                        calcEditText.setText(strExpression + "=" + ((int) result));
+                        calcEditText.setText(strExpression + "=" + ((int) bdResult.doubleValue()));
                     } else {
 
                         // Disabling every other button except the Clear button.
@@ -140,10 +147,16 @@ public class MainActivity extends AppCompatActivity {
                         String undefinedStatement = "";
 
                         expressionList = new LinkedList<String>();
-                        result = 0;
+                        bdResult = BigDecimal.ZERO;
 
                         boolean isDouble = false;
                         int exprSize = strExpression.length();
+
+                        /* In the case a division is executed in the
+                         * given expression, it may lead to the number
+                         * being rounded.
+                         */
+                        boolean hasBeenRounded = false;
 
 
                         // Capturing the first token:
@@ -187,10 +200,10 @@ public class MainActivity extends AppCompatActivity {
 
                         List<String> newList = new LinkedList<String>();
 
-                        double firstOperand = 0;
-                        double secondOperand = 0;
+                        BigDecimal bdFirstOperand = BigDecimal.ZERO;
+                        BigDecimal bdSecondOperand = BigDecimal.ZERO;
 
-                        double tempResult;
+                        BigDecimal bdTempResult;
 
                         /* Incremented when the operator is a
                          * multiplication or division and then
@@ -231,12 +244,16 @@ public class MainActivity extends AppCompatActivity {
 
                                 isMultiplication = currentNode.equals(operators[2]);
                                 isDivision = currentNode.equals(operators[3]);
+                                Double currentValue;
 
                                 if (backToBackCounter > 0) {
-                                    firstOperand = Double.parseDouble( (String) ((LinkedList<String>) newList).removeLast());
+                                    currentValue = Double.parseDouble( (String) ((LinkedList<String>) newList).removeLast());
+
                                 } else {
-                                    firstOperand = Double.parseDouble((String) follower.next());
+                                    currentValue = Double.parseDouble((String) follower.next());
                                 }
+
+                                bdFirstOperand = BigDecimal.valueOf(currentValue);
 
                                 follower.next();
                                 backToBackCounter++;
@@ -251,31 +268,48 @@ public class MainActivity extends AppCompatActivity {
                                  * calculation is completed.
                                  */
                                 if (isMultiplication || isDivision) {
-                                    tempResult = 0;
-                                    secondOperand = Double.parseDouble((String) follower.next());
+                                    bdTempResult = BigDecimal.ZERO;
+
+                                    Double currentValue = Double.parseDouble((String) follower.next());
+                                    bdSecondOperand = BigDecimal.valueOf(currentValue);
 
                                     if (isMultiplication) {
-                                        tempResult = firstOperand * secondOperand;
+                                        bdTempResult = bdFirstOperand.multiply(bdSecondOperand);
+
                                         isMultiplication = false;
                                     } else if (isDivision) {
 
                                         // Covering undefined cases:
-                                        if (secondOperand == 0) {
+                                        if (((int) bdSecondOperand.doubleValue()) == 0) {
                                             isAnUndefinedStatement = true;
-                                            if (firstOperand == 0) {
+                                            if (((int) bdFirstOperand.doubleValue()) == 0) {
                                                 undefinedStatement = "Undefined";
                                             } else {
                                                 undefinedStatement = "Cannot divide by zero";
                                             }
                                         } else {
-                                            tempResult = firstOperand / secondOperand;
+
+                                            /* Making sure to deal with the case if the
+                                             * division results in a very very long
+                                             * decimal value.
+                                             */
+                                            try {
+                                                bdTempResult = bdFirstOperand.divide(bdSecondOperand);
+                                            } catch (ArithmeticException e) {
+                                                bdTempResult = bdFirstOperand.divide(bdSecondOperand,
+                                                        ROUNDING_WHILE_CALCULATING,
+                                                        BigDecimal.ROUND_HALF_UP);
+
+                                                hasBeenRounded = true;
+                                            }
                                         }
 
                                         isDivision = false;
                                     }
 
                                     // Storing new result:
-                                    ((LinkedList<String>) newList).add("" + tempResult);
+                                    ((LinkedList<String>) newList).add("" + bdTempResult);
+
                                 } else if (follower.hasNext() && !leader.hasNext()) {
                                     /* Capturing the last numerical value if
                                      * the last operation was either an
@@ -293,7 +327,7 @@ public class MainActivity extends AppCompatActivity {
                         // Resetting iterators:
                         leader = expressionList.iterator();
 
-                        secondOperand = 0;
+                        bdSecondOperand = BigDecimal.ZERO;
                         boolean isAddition = false;
                         boolean isSubtraction = false;
 
@@ -312,15 +346,18 @@ public class MainActivity extends AppCompatActivity {
 
                                 // Capturing the values:
                                 if (indexCounter == 0) {
-                                    result = Double.parseDouble(currentNode);
+                                    Double currentValue = Double.parseDouble(currentNode);
+                                    bdResult = BigDecimal.valueOf(currentValue);
+
                                 } else if (indexCounter % 2 == 0) {
-                                    secondOperand = Double.parseDouble(currentNode);
+                                    Double currentValue = Double.parseDouble(currentNode);
+                                    bdSecondOperand = BigDecimal.valueOf(currentValue);
 
                                     // Calculating part of the expression:
                                     if (isAddition) {
-                                        result += secondOperand;
+                                        bdResult = bdResult.add(bdSecondOperand);
                                     } else if (isSubtraction) {
-                                        result -= secondOperand;
+                                        bdResult = bdResult.subtract(bdSecondOperand);
                                     }
 
                                     // Resetting the operators check:
@@ -332,13 +369,20 @@ public class MainActivity extends AppCompatActivity {
                             indexCounter++;
                         }
 
+                        double resultAsDouble = bdResult.doubleValue();
+
                         // Result:
                         if (isAnUndefinedStatement) {
                             calcEditText.setText(strExpression + "=" + undefinedStatement);
-                        } else if (isDouble || result != Math.floor(result)) {
-                            calcEditText.setText(strExpression + "=" + result);
+                        } else if (hasBeenRounded) {
+                            bdResult = bdResult.setScale(ROUNDING_PRECISION_TO_DISPLAY,
+                                    BigDecimal.ROUND_HALF_UP);
+
+                            calcEditText.setText(strExpression + "=" + bdResult);
+                        } else if (isDouble || resultAsDouble != Math.floor(resultAsDouble)) {
+                            calcEditText.setText(strExpression + "=" + bdResult);
                         } else {
-                            calcEditText.setText(strExpression + "=" + ((int) result));
+                            calcEditText.setText(strExpression + "=" + ((int) bdResult.doubleValue()));
                         }
                     }
                 }
