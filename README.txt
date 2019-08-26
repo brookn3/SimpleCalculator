@@ -2,9 +2,9 @@ The Simple Calculator is an Android application
 and as the name suggests it is a calculator app.
 
 This app covers all of the edge cases (like a user trying to divide by zero)
-and it produces precise results by using BigDecimal objects to 
-calculate the user's results. But this is all taken care of for
-the users so they can get the correct results and keep moving.
+and it produces precise results (by using BigDecimal objects to 
+calculate the user's results) so the end user can simply focus on
+getting their result and moving forward with their day.
 
 If you would like to try out this application, simply download the APK
 file from: (app, release, app-release.apk).
@@ -14,7 +14,15 @@ most of the code is straight forward except for the equalsBtn onClick function
 so please read through the comments in that function if you desire to get a better
 understanding of how it works.
 
-*** This application will soon be available in the Google Play Store. ***
+
+*** This app is now available in the Google Play Store. ***
+To find it please search
+
+pub:Brook Negussie
+
+(It is case sensitive so be aware.)
+This searching method allows you to search by publisher name
+because there are too many calculator apps out there.
 
 
 
