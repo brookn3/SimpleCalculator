@@ -16,13 +16,11 @@ understanding of how it works.
 
 
 *** This app is now available in the Google Play Store. ***
-To find it please search
+To find it please go to any browser and use this URL:
+https://play.google.com/store/apps/details?id=edu.tacoma.uw.css.brookn3.simplecalculator
 
-pub:Brook Negussie
-
-(It is case sensitive so be aware.)
-This searching method allows you to search by publisher name
-because there are too many calculator apps out there.
+Since there are tons of calculator apps out there
+this app is hard to find by simply using the app name.
 
 
 
